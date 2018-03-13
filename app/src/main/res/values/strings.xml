@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Movies Now</string>
+    <string name="contentImage">Poster Movie</string>
 </resources>

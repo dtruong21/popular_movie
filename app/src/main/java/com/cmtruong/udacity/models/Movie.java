@@ -1,16 +1,32 @@
 package com.cmtruong.udacity.models;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by davidetruong on 12/03/2018.
+ *
  * @author davidetruong
  * @version 1.0
  */
 
 public class Movie {
-    public int id, vote_count;
-    public String poster_path, overview, release_date, original_title, original_language, title;
-    public boolean isAdult, hasVideo;
-    public Number vote_average;
+
+    @SerializedName("id")
+    private int id;
+    @SerializedName("poster_path")
+    private String poster_path;
+    @SerializedName("overview")
+    private String overview;
+    @SerializedName("release_date")
+    private String release_date;
+    @SerializedName("original_title")
+    private String original_title;
+    @SerializedName("original_language")
+    private String original_language;
+    @SerializedName("title")
+    private String title;
+    @SerializedName("vote_average")
+    private Double vote_average;
 
     public Movie() {
 
@@ -22,14 +38,6 @@ public class Movie {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getVote_count() {
-        return vote_count;
-    }
-
-    public void setVote_count(int vote_count) {
-        this.vote_count = vote_count;
     }
 
     public String getPoster_path() {
@@ -80,27 +88,25 @@ public class Movie {
         this.title = title;
     }
 
-    public boolean isAdult() {
-        return isAdult;
-    }
-
-    public void setAdult(boolean adult) {
-        isAdult = adult;
-    }
-
-    public boolean isHasVideo() {
-        return hasVideo;
-    }
-
-    public void setHasVideo(boolean hasVideo) {
-        this.hasVideo = hasVideo;
-    }
-
-    public Number getVote_average() {
+    public Double getVote_average() {
         return vote_average;
     }
 
-    public void setVote_average(Number vote_average) {
+    public void setVote_average(Double vote_average) {
         this.vote_average = vote_average;
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id=" + id +
+                ", poster_path='" + poster_path + '\'' +
+                ", overview='" + overview + '\'' +
+                ", release_date='" + release_date + '\'' +
+                ", original_title='" + original_title + '\'' +
+                ", original_language='" + original_language + '\'' +
+                ", title='" + title + '\'' +
+                ", vote_average=" + vote_average +
+                '}';
     }
 }
