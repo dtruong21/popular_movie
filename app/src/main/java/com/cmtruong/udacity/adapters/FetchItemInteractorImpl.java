@@ -24,41 +24,38 @@ import retrofit2.Response;
 public class FetchItemInteractorImpl implements FetchItemInteractor {
     private static final String TAG = FetchItemInteractorImpl.class.getSimpleName();
 
+    private List<Movie> movies = new ArrayList<>();
+
 
     @Override
     public void fetchItem(final onFinishedListener listener) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Log.i(TAG, "run: done");
-                listener.onFinished(fetchDataPopular());
+                //listener.onFinished(fetchDataPopular());
+                Log.i(TAG, "fetchData: begin ...");
+                MovieServices movieServices = MovieServices.retrofit.create(MovieServices.class);
+                Call<Page> myPage = movieServices.requestPopularMovies(1);
+                myPage.enqueue(new Callback<Page>() {
+                    @Override
+                    public void onResponse(Call<Page> call, Response<Page> response) {
+                        int statusCode = response.code();
+                        Log.i(TAG, "onResponse: " + response.code());
+                        if (response.isSuccessful() && statusCode == 200) {
+                            movies = response.body().getMovies();
+                            listener.onFinished(movies);
+                            Log.i(TAG, "onResponse: " + movies.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Page> call, Throwable t) {
+                        Log.e(TAG, "onFailure: ", t);
+                    }
+                });
             }
         }, 1000);
     }
 
-    private List<Movie> fetchDataPopular() {
-        Log.i(TAG, "fetchData: begin ...");
-        final List<Movie> movies = new ArrayList<>();
-        MovieServices movieServices = MovieServices.retrofit.create(MovieServices.class);
-        Call<Page> myPage = movieServices.requestPopularMovies(1);
-        myPage.enqueue(new Callback<Page>() {
-            @Override
-            public void onResponse(Call<Page> call, Response<Page> response) {
-                int statusCode = response.code();
-                if (response.isSuccessful() && statusCode == 200) {
-                    Page page = response.body();
-                    if (page != null)
-                        movies.addAll(page.getMovies());
-                    Log.i(TAG, "onResponse: " + movies.toString());
-                }
-            }
 
-            @Override
-            public void onFailure(Call<Page> call, Throwable t) {
-                Log.e(TAG, "onFailure: ", t);
-            }
-        });
-
-        return movies;
-    }
 }
