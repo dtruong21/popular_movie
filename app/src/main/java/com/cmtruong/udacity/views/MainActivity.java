@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.cmtruong.udacity.R;
 import com.cmtruong.udacity.adapters.FetchItemInteractorImpl;
 import com.cmtruong.udacity.adapters.MovieAdapter;
+import com.cmtruong.udacity.configs.Config;
 import com.cmtruong.udacity.models.Movie;
 import com.cmtruong.udacity.presenter.MainPresenter;
 import com.cmtruong.udacity.presenter.MainPresenterImpl;
@@ -38,6 +39,8 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
 
     @BindView(R.id.gv_movie)
     GridView gridView;
+    
+    List<Movie> moviesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +79,7 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
     @Override
     public void setItems(List<Movie> movies) {
         gridView.setAdapter(new MovieAdapter(this, movies));
+        moviesList = movies;
         Log.i(TAG, "setItems: checked");
     }
 
@@ -86,6 +90,15 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        mPresenter.onItemClicked(i);
+        Movie movie = moviesList.get(i);
+        mPresenter.onItemClicked(i, movie);
+    }
+    
+    @Override
+    public void navigateToDetail(Movie movie) {
+        Intent intent = new Intent(this, DetailMovieActivity.class);
+        intent.putExtra(Config.MOVIE_INTENT_KEY, movie);
+        startActivity(intent);
+        finish();
     }
 }
