@@ -19,4 +19,6 @@ public interface MainView {
     void setItems(List<Movie> movies);
 
     void showMessage(String message);
+    
+    void navigateToDetail(Movie movie);
 }
