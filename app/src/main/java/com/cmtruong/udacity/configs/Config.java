@@ -19,4 +19,7 @@ public class Config {
     public static final String API_LANGUAGE = "&language=en-US";
     public static final String PAGE_NUMBER = "&page=";
     public static final String IMAGE_URL = "http://image.tmdb.org/t/p/w185";
+    
+    // Movie's intent key to transfer
+    public static final String MOVIE_INTENT_KEY = "movie";
 }
