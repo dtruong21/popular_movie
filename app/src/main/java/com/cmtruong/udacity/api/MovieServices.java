@@ -6,8 +6,13 @@ import com.cmtruong.udacity.models.Page;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.List;
 
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -24,24 +29,29 @@ import retrofit2.http.Query;
 
 public interface MovieServices {
 
-    @GET(Config.POPULAR + Config.API_KEY + Config.API_LANGUAGE)
-    Call<Page> requestPopularMovies(@Query("page") int page);
+    @GET(Config.POPULAR)
+    Call<Page> requestPopularMovies(@Query("api_key") String apiKey);
 
-    @GET(Config.TOP_RATED + Config.API_KEY + Config.API_LANGUAGE)
-    Call<List<Movie>> requestTopRatedMovies(@Query("page") int page);
+    @GET(Config.TOP_RATED)
+    Call<List<Movie>> requestTopRatedMovies(@Query("api_key") String apiKey);
 
-    @GET("{movie_id}?api_key=" + Config.API_KEY + Config.API_LANGUAGE)
+    @GET("{movie_id}?api_key=")
     Call<Movie> requestMovie(@Path("movie_id") int id);
 
-    @GET(Config.POPULAR + Config.API_KEY + Config.API_LANGUAGE + Config.PAGE_NUMBER + "1")
-    Call<JSONObject> requestMovies();
+    Interceptor interceptor = new Interceptor() {
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request newRequest = chain.request().newBuilder().addHeader("User-Agent", "popular-movie").build();
+            return chain.proceed(newRequest);
+        }
+    };
 
-
+    OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(interceptor).build();
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(Config.API_URL)
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build();
-
 
 }
 

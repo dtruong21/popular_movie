@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.cmtruong.udacity.api.MovieServices;
+import com.cmtruong.udacity.configs.Config;
 import com.cmtruong.udacity.models.Movie;
 import com.cmtruong.udacity.models.Page;
 
@@ -35,7 +36,7 @@ public class FetchItemInteractorImpl implements FetchItemInteractor {
                 //listener.onFinished(fetchDataPopular());
                 Log.i(TAG, "fetchData: begin ...");
                 MovieServices movieServices = MovieServices.retrofit.create(MovieServices.class);
-                Call<Page> myPage = movieServices.requestPopularMovies(1);
+                Call<Page> myPage = movieServices.requestPopularMovies(Config.API_KEY);
                 myPage.enqueue(new Callback<Page>() {
                     @Override
                     public void onResponse(Call<Page> call, Response<Page> response) {

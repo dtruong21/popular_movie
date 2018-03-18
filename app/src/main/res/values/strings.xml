@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">Movies Now</string>
     <string name="contentImage">Poster Movie</string>
+    <string name="title">Title</string>
+    <string name="date">Release date</string>
+    <string name="vote_average">Vote average</string>
+    <string name="vote_count">Vote count</string>
+    <string name="overview">Overview</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -35,8 +35,10 @@ public class MainPresenterImpl implements MainPresenter, FetchItemInteractorImpl
     }
 
     @Override
-    public void onItemClicked(int position) {
-        if (mainView != null) mainView.showMessage(TAG + " " + position);
+    public void onItemClicked(int position, Movie movie) {
+        if (mainView != null) {
+            mainView.navigateToDetail(movie);
+        }
     }
 
     @Override

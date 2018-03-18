@@ -1,6 +1,7 @@
 package com.cmtruong.udacity.views;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,13 +34,14 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    MainPresenter mPresenter;
+
     @BindView(R.id.pb_grid)
     ProgressBar progressBar;
-    MainPresenter mPresenter;
 
     @BindView(R.id.gv_movie)
     GridView gridView;
-    
+
     List<Movie> moviesList;
 
     @Override
@@ -83,22 +85,17 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
         Log.i(TAG, "setItems: checked");
     }
 
-    @Override
-    public void showMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Movie movie = moviesList.get(i);
         mPresenter.onItemClicked(i, movie);
     }
-    
+
     @Override
     public void navigateToDetail(Movie movie) {
         Intent intent = new Intent(this, DetailMovieActivity.class);
         intent.putExtra(Config.MOVIE_INTENT_KEY, movie);
         startActivity(intent);
-        finish();
     }
 }

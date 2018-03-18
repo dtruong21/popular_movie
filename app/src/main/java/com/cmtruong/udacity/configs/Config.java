@@ -10,8 +10,8 @@ package com.cmtruong.udacity.configs;
 public class Config {
 
     public static final String API_URL = "https://api.themoviedb.org/3/movie/";
-    public static final String POPULAR = "popular?api_key=";
-    public static final String TOP_RATED = "top_rated?api_key=";
+    public static final String POPULAR = "popular";
+    public static final String TOP_RATED = "top_rated";
 
     // Value must to change when you want to test my app
     public static final String API_KEY = "";
