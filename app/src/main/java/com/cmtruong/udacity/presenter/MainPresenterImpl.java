@@ -1,10 +1,14 @@
 package com.cmtruong.udacity.presenter;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.cmtruong.udacity.adapters.FetchItemInteractor;
 import com.cmtruong.udacity.adapters.FetchItemInteractorImpl;
+import com.cmtruong.udacity.configs.Config;
 import com.cmtruong.udacity.models.Movie;
+import com.cmtruong.udacity.views.MainActivity;
 import com.cmtruong.udacity.views.MainView;
 
 import java.util.List;
@@ -30,8 +34,8 @@ public class MainPresenterImpl implements MainPresenter, FetchItemInteractorImpl
     public void onResume() {
         Log.i(TAG, "onResume: check");
         if (mainView != null) mainView.showProgress();
-        Log.i(TAG, "onResume: checked");
         interactor.fetchItem(this);
+        Log.i(TAG, "onResume: " + mainView.setSortType());
     }
 
     @Override
@@ -52,5 +56,10 @@ public class MainPresenterImpl implements MainPresenter, FetchItemInteractorImpl
             mainView.setItems(movies);
             mainView.hideProgress();
         }
+    }
+
+    @Override
+    public String getSortType() {
+        return mainView.setSortType();
     }
 }

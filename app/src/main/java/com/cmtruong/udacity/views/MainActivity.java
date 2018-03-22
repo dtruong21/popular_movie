@@ -2,7 +2,9 @@ package com.cmtruong.udacity.views;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,7 +35,7 @@ import butterknife.ButterKnife;
  * @author davidetruong
  * @version 1.0
  */
-public class MainActivity extends Activity implements MainView, AdapterView.OnItemClickListener {
+public class MainActivity extends Activity implements MainView, AdapterView.OnItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -47,6 +49,10 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
 
     List<Movie> moviesList;
 
+    SharedPreferences sharedPreferences;
+
+    String sortType;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +60,10 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
         ButterKnife.bind(this);
         gridView.setOnItemClickListener(this);
         mPresenter = new MainPresenterImpl(this, new FetchItemInteractorImpl());
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sortType = sharedPreferences.getString(getResources().getString(R.string.pref_sort_key), Config.POPULAR);
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -61,12 +71,15 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
         super.onResume();
         Log.i(TAG, "onResume: begin here ...");
         mPresenter.onResume();
+
     }
 
     @Override
     protected void onDestroy() {
         mPresenter.onDestroy();
         super.onDestroy();
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -103,6 +116,11 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
     }
 
     @Override
+    public String setSortType() {
+        return sortType;
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.settings, menu);
@@ -124,5 +142,12 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        if (s.equals(getString(R.string.pref_sort_key))) {
+            sortType = sharedPreferences.getString(getResources().getString(R.string.pref_sort_key), Config.POPULAR);
+        }
     }
 }

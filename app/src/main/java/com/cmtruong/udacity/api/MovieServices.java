@@ -35,6 +35,9 @@ public interface MovieServices {
     @GET(Config.TOP_RATED)
     Call<List<Movie>> requestTopRatedMovies(@Query("api_key") String apiKey);
 
+    @GET("{sort}")
+    Call<Page> requestMovies(@Path("sort") String sort, @Query("api_key") String apiKey);
+
     @GET("{movie_id}?api_key=")
     Call<Movie> requestMovie(@Path("movie_id") int id);
 

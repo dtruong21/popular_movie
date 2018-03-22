@@ -16,12 +16,12 @@
 
     <!-- Label for the sort preference -->
     <string name="pref_sort_label">Sort</string>
-    <string name="pref_sort_top_rate_label">Top rates</string>
+    <string name="pref_sort_top_rate_label">Top rated</string>
     <string name="pref_sort_popular_label">Popular</string>
 
     <!-- Key for the sort preference -->
     <string name="pref_sort_key" translatable="false">sort</string>
-    <string name="pref_sort_top_rates" translatable="false">rates</string>
+    <string name="pref_sort_top_rates" translatable="false">top_rated</string>
     <string name="pref_sort_popular" translatable="false">popular</string>
 
     <string name="pref_general_label">General</string>

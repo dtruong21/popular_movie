@@ -1,6 +1,8 @@
 package com.cmtruong.udacity.adapters;
 
+import android.content.SharedPreferences;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.cmtruong.udacity.api.MovieServices;
@@ -35,8 +37,9 @@ public class FetchItemInteractorImpl implements FetchItemInteractor {
             public void run() {
                 //listener.onFinished(fetchDataPopular());
                 Log.i(TAG, "fetchData: begin ...");
+                Log.i(TAG, "run: " + listener.getSortType());
                 MovieServices movieServices = MovieServices.retrofit.create(MovieServices.class);
-                Call<Page> myPage = movieServices.requestPopularMovies(Config.API_KEY);
+                Call<Page> myPage = movieServices.requestMovies(listener.getSortType(), Config.API_KEY);
                 myPage.enqueue(new Callback<Page>() {
                     @Override
                     public void onResponse(Call<Page> call, Response<Page> response) {

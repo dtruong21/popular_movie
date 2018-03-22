@@ -14,7 +14,10 @@ import java.util.List;
 public interface FetchItemInteractor {
     interface onFinishedListener {
         void onFinished(List<Movie> movies);
+
+        String getSortType();
     }
 
     void fetchItem(onFinishedListener listener);
+
 }

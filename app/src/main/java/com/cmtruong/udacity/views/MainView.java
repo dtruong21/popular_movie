@@ -19,4 +19,6 @@ public interface MainView {
     void setItems(List<Movie> movies);
 
     void navigateToDetail(Movie movie);
+
+    String setSortType();
 }
