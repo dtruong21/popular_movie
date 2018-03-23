@@ -16,8 +16,6 @@ public class Config {
     // Value must to change when you want to test my app
     public static final String API_KEY = "";
 
-    public static final String API_LANGUAGE = "&language=en-US";
-    public static final String PAGE_NUMBER = "&page=";
     public static final String IMAGE_URL = "http://image.tmdb.org/t/p/w185";
 
     // Movie's intent key to transfer

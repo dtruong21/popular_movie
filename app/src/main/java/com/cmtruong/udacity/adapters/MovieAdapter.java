@@ -8,11 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.cmtruong.udacity.R;
 import com.cmtruong.udacity.configs.Config;
 import com.cmtruong.udacity.models.Movie;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -47,11 +50,17 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        Picasso.get()
-                .load(Config.IMAGE_URL + movie.getPoster_path())
-                .placeholder(R.drawable.ic_launcher_background)
-                .error(R.drawable.ic_launcher_background)
-                .into(viewHolder.imageView);
+        if (null != movie) {
+            Picasso.get()
+                    .load(Config.IMAGE_URL + movie.getPoster_path())
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.ic_launcher_background)
+                    .into(viewHolder.imageView);
+            String rated = String.valueOf(movie.getVote_average()) + "/10";
+
+            //viewHolder.textView.setText(rated);
+        }
+
 
         Log.i(TAG, "getView: checked");
         return convertView;
@@ -60,6 +69,9 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
     class ViewHolder {
         @BindView(R.id.iv_grid_item)
         ImageView imageView;
+
+//        @BindView(R.id.tv_rated_average)
+//        TextView textView;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);

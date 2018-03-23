@@ -3,6 +3,7 @@ package com.cmtruong.udacity.views;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -67,10 +68,17 @@ public class DetailMovieActivity extends Activity {
     public void loadData(Movie movie) {
         title.setText(movie.getTitle());
 
-        DateFormat format = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH);
+        // Convert string to date format
+        DateFormat format1 = new SimpleDateFormat("yyyy-mm-dd", Locale.US);
+
+        // Convert date to new string
+        DateFormat format2 = new SimpleDateFormat("MMMM d, yyyy");
+
         try {
-            Date dateFormat = format.parse(movie.getRelease_date());
-            date.setText(dateFormat.toString());
+            Date dateFormat = format1.parse(movie.getRelease_date());
+            String newDateFormat = format2.format(dateFormat);
+            Log.i(TAG, "loadData: " + newDateFormat);
+            date.setText(newDateFormat);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -89,11 +97,10 @@ public class DetailMovieActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case android.R.id.home:
-                Intent homeIntent = new Intent(this, MainActivity.class);
-                homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(homeIntent);
+                onBackPressed();
+                return true;
         }
-        return (super.onOptionsItemSelected(menuItem));
+        return super.onOptionsItemSelected(menuItem);
     }
 
 

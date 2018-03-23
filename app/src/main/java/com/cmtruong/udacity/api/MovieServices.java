@@ -29,12 +29,6 @@ import retrofit2.http.Query;
 
 public interface MovieServices {
 
-    @GET(Config.POPULAR)
-    Call<Page> requestPopularMovies(@Query("api_key") String apiKey);
-
-    @GET(Config.TOP_RATED)
-    Call<List<Movie>> requestTopRatedMovies(@Query("api_key") String apiKey);
-
     @GET("{sort}")
     Call<Page> requestMovies(@Path("sort") String sort, @Query("api_key") String apiKey);
 
