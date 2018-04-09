@@ -1,5 +1,7 @@
 package com.cmtruong.udacity.configs;
 
+import com.cmtruong.udacity.BuildConfig;
+
 /**
  * Created by davidetruong on 12/03/2018.
  *
@@ -14,7 +16,7 @@ public class Config {
     public static final String TOP_RATED = "top_rated";
 
     // Value must to change when you want to test my app
-    public static final String API_KEY = "";
+    public static final String API_KEY = BuildConfig.API_KEY;
 
     public static final String IMAGE_URL = "http://image.tmdb.org/t/p/w185";
 

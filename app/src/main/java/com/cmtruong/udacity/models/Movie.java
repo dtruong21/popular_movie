@@ -12,7 +12,7 @@ import com.google.gson.annotations.SerializedName;
  * @version 1.0
  */
 
-public class Movie implements Parcelable{
+public class Movie implements Parcelable {
 
     @SerializedName("id")
     private int id;
@@ -30,6 +30,8 @@ public class Movie implements Parcelable{
     private String title;
     @SerializedName("vote_average")
     private Double vote_average;
+    @SerializedName("backdrop_path")
+    private String backdrop_path;
 
     public Movie() {
 
@@ -43,6 +45,7 @@ public class Movie implements Parcelable{
         original_title = in.readString();
         original_language = in.readString();
         title = in.readString();
+        backdrop_path = in.readString();
         if (in.readByte() == 0) {
             vote_average = null;
         } else {
@@ -126,6 +129,15 @@ public class Movie implements Parcelable{
         this.vote_average = vote_average;
     }
 
+    public String getBackdrop_path() {
+        return backdrop_path;
+    }
+
+    public void setBackdrop_path(String backdrop_path) {
+        this.backdrop_path = backdrop_path;
+    }
+
+
     @Override
     public String toString() {
         return "Movie{" +
@@ -137,6 +149,7 @@ public class Movie implements Parcelable{
                 ", original_language='" + original_language + '\'' +
                 ", title='" + title + '\'' +
                 ", vote_average=" + vote_average +
+                ", backdrop_path='" + backdrop_path + '\'' +
                 '}';
     }
 
@@ -155,6 +168,7 @@ public class Movie implements Parcelable{
         parcel.writeString(original_title);
         parcel.writeString(original_language);
         parcel.writeString(title);
+        parcel.writeString(backdrop_path);
         if (vote_average == null) {
             parcel.writeByte((byte) 0);
         } else {

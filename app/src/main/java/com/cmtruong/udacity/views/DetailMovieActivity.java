@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
  * @author davidetruong
  * @version 1.0
  */
-public class DetailMovieActivity extends Activity {
+public class DetailMovieActivity extends Activity implements DetailMovieView {
 
     private static final String TAG = DetailMovieActivity.class.getSimpleName();
 
@@ -104,4 +104,18 @@ public class DetailMovieActivity extends Activity {
     }
 
 
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void navigateToDetail(Movie movie) {
+
+    }
 }
