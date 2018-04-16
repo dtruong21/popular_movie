@@ -25,4 +25,8 @@
     <string name="pref_sort_popular" translatable="false">popular</string>
 
     <string name="pref_general_label">General</string>
+
+    <string name="add2Fav">Add to favorite</string>
+
+    <string name="trailer">Trailer</string>
 </resources>

@@ -3,6 +3,8 @@ package com.cmtruong.udacity.api;
 import com.cmtruong.udacity.configs.Config;
 import com.cmtruong.udacity.models.Movie;
 import com.cmtruong.udacity.models.Page;
+import com.cmtruong.udacity.models.ResultReview;
+import com.cmtruong.udacity.models.ResultVideo;
 
 import org.json.JSONObject;
 
@@ -32,8 +34,11 @@ public interface MovieServices {
     @GET("{sort}")
     Call<Page> requestMovies(@Path("sort") String sort, @Query("api_key") String apiKey);
 
-    @GET("{movie_id}?api_key=")
-    Call<Movie> requestMovie(@Path("movie_id") int id);
+    @GET("{movie_id}/reviews")
+    Call<ResultReview> getReviews(@Path("movie_id") int id, @Query("api_key") String apiKey);
+
+    @GET("{movie_id}/videos")
+    Call<ResultVideo> getVideos(@Path("movie_id") int id, @Query("api_key") String apiKey);
 
     Interceptor interceptor = new Interceptor() {
         @Override

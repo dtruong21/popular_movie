@@ -3,6 +3,8 @@ package com.cmtruong.udacity.views;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -10,14 +12,21 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.cmtruong.udacity.R;
+import com.cmtruong.udacity.adapters.FetchDetailInteractorImpl;
+import com.cmtruong.udacity.adapters.TrailerAdapter;
 import com.cmtruong.udacity.configs.Config;
 import com.cmtruong.udacity.models.Movie;
+import com.cmtruong.udacity.models.Review;
+import com.cmtruong.udacity.models.Video;
+import com.cmtruong.udacity.presenter.DetailMoviePresenter;
+import com.cmtruong.udacity.presenter.DetailMoviePresenterImpl;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -44,19 +53,41 @@ public class DetailMovieActivity extends Activity implements DetailMovieView {
     @BindView(R.id.tv_overview)
     TextView overview;
 
+    @BindView(R.id.rv_reviews)
+    RecyclerView rv_reviews;
+    @BindView(R.id.rv_trailer)
+    RecyclerView rv_trailer;
+
+    DetailMoviePresenter mPresenter;
+
+    Movie movie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_movie);
+        Log.d(TAG, "onCreate: ");
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
-        Movie movie = intent.getParcelableExtra(Config.MOVIE_INTENT_KEY);
+        movie = intent.getParcelableExtra(Config.MOVIE_INTENT_KEY);
         loadData(movie);
+        Log.d(TAG, "onCreate: " + movie.toString());
 
+        mPresenter = new DetailMoviePresenterImpl(new FetchDetailInteractorImpl(), this);
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        rv_trailer.setLayoutManager(layoutManager);
+        rv_trailer.setHasFixedSize(true);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: checked ");
+        mPresenter.onResume();
     }
 
     //
@@ -65,6 +96,11 @@ public class DetailMovieActivity extends Activity implements DetailMovieView {
         super.onDestroy();
     }
 
+    /**
+     * Load data to display
+     *
+     * @param movie
+     */
     public void loadData(Movie movie) {
         title.setText(movie.getTitle());
 
@@ -93,6 +129,7 @@ public class DetailMovieActivity extends Activity implements DetailMovieView {
                 .into(imageView);
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
@@ -105,17 +142,23 @@ public class DetailMovieActivity extends Activity implements DetailMovieView {
 
 
     @Override
-    public void showProgress() {
+    public void setTrailerItem(List<Video> videos) {
+        rv_trailer.setAdapter(new TrailerAdapter(videos));
+        Log.d(TAG, "setTrailerItem: " + videos.toString());
+    }
+
+    @Override
+    public void setReviewItem(List<Review> reviews) {
 
     }
 
     @Override
-    public void hideProgress() {
-
+    public Movie setMovieItem() {
+        return movie;
     }
 
     @Override
-    public void navigateToDetail(Movie movie) {
+    public void navigateToYoutubeTrailer(Video video) {
 
     }
 }

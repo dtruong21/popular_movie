@@ -1,6 +1,10 @@
 package com.cmtruong.udacity.views;
 
 import com.cmtruong.udacity.models.Movie;
+import com.cmtruong.udacity.models.Review;
+import com.cmtruong.udacity.models.Video;
+
+import java.util.List;
 
 /**
  * @author davidetruong
@@ -9,9 +13,11 @@ import com.cmtruong.udacity.models.Movie;
  */
 public interface DetailMovieView {
 
-    void showProgress();
+    void setTrailerItem(List<Video> videos);
 
-    void hideProgress();
+    void setReviewItem(List<Review> reviews);
 
-    void navigateToDetail(Movie movie);
+    Movie setMovieItem();
+
+    void navigateToYoutubeTrailer(Video video);
 }

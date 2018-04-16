@@ -88,4 +88,14 @@ public class Review implements Parcelable {
         dest.writeString(content);
         dest.writeString(url);
     }
+
+    @Override
+    public String toString() {
+        return "Review{" +
+                "id='" + id + '\'' +
+                ", author='" + author + '\'' +
+                ", content='" + content + '\'' +
+                ", url='" + url + '\'' +
+                '}';
+    }
 }
