@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cmtruong.udacity.R;
+import com.cmtruong.udacity.configs.Config;
 import com.cmtruong.udacity.models.Review;
 
 import java.util.List;
@@ -20,7 +21,12 @@ import butterknife.ButterKnife;
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder> {
 
     private static final String TAG = ReviewAdapter.class.getSimpleName();
+    private static final String NO_REVIEW = "No review";
     private List<Review> reviews;
+
+    public ReviewAdapter(List<Review> reviews) {
+        this.reviews = reviews;
+    }
 
     @NonNull
     @Override
@@ -59,8 +65,14 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         }
 
         void bind(Review review) {
-            tv_review_author.setText(review.getAuthor());
-            tv_review_content.setText(review.getContent());
+
+            if (review != null) {
+                tv_review_author.setText(review.getAuthor());
+                tv_review_content.setText(review.getContent());
+            } else {
+                tv_review_author.setText(NO_REVIEW);
+            }
+
         }
     }
 }

@@ -11,7 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cmtruong.udacity.R;
+import com.cmtruong.udacity.configs.Config;
+import com.cmtruong.udacity.models.Movie;
 import com.cmtruong.udacity.models.Video;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +26,16 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
     private static final String TAG = TrailerAdapter.class.getSimpleName();
 
     private List<Video> trailers;
+    private final OnItemClickListener mListener;
 
-    public TrailerAdapter(List<Video> trailers) {
+    public TrailerAdapter(List<Video> trailers, OnItemClickListener listener) {
         this.trailers = trailers;
+        mListener = listener;
+    }
+
+
+    public interface OnItemClickListener {
+        void onItemClick(Video video);
     }
 
     @NonNull
@@ -45,7 +55,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
         Log.d(TAG, "onBindViewHolder: " + position);
         Video video = trailers.get(position);
         Log.d(TAG, "onBindViewHolder: " + video.toString());
-        holder.bind(video);
+        holder.bind(video, mListener);
     }
 
     @Override
@@ -67,8 +77,21 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
             ButterKnife.bind(this, itemView);
         }
 
-        void bind(Video video) {
+        void bind(final Video video, final OnItemClickListener listener) {
             tv_name_video.setText(video.getName());
+
+            Picasso.get()
+                    .load(Config.YOUTUBE_URL + video.getKey() + "/0.jpg")
+                    .placeholder(R.drawable.ic_launcher_foreground)
+                    .error(R.drawable.ic_launcher_background).into(iv_trailer);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(video);
+                }
+            });
         }
+
+
     }
 }

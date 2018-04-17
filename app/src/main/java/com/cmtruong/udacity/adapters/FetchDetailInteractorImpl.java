@@ -38,6 +38,7 @@ public class FetchDetailInteractorImpl implements FetchDetailInteractor {
                 Log.d(TAG, "run: " + listener.getMovie());
                 MovieServices movieServices = MovieServices.retrofit.create(MovieServices.class);
                 movie = listener.getMovie();
+
                 // Call first request
                 Call<ResultReview> myReviews = movieServices.getReviews(movie.getId(), Config.API_KEY);
                 myReviews.enqueue(new Callback<ResultReview>() {
@@ -80,6 +81,6 @@ public class FetchDetailInteractorImpl implements FetchDetailInteractor {
                     }
                 });
             }
-        }, 1000);
+        }, 100);
     }
 }

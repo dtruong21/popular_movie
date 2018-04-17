@@ -2,6 +2,7 @@ package com.cmtruong.udacity.views;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.cmtruong.udacity.R;
 import com.cmtruong.udacity.adapters.FetchDetailInteractorImpl;
+import com.cmtruong.udacity.adapters.ReviewAdapter;
 import com.cmtruong.udacity.adapters.TrailerAdapter;
 import com.cmtruong.udacity.configs.Config;
 import com.cmtruong.udacity.models.Movie;
@@ -39,6 +41,7 @@ import butterknife.ButterKnife;
 public class DetailMovieActivity extends Activity implements DetailMovieView {
 
     private static final String TAG = DetailMovieActivity.class.getSimpleName();
+
 
     @BindView(R.id.iv_movie)
     ImageView imageView;
@@ -77,11 +80,23 @@ public class DetailMovieActivity extends Activity implements DetailMovieView {
         mPresenter = new DetailMoviePresenterImpl(new FetchDetailInteractorImpl(), this);
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        rv_trailer.setLayoutManager(layoutManager);
-        rv_trailer.setHasFixedSize(true);
+        setLayoutManager();
+
+
     }
+
+    public void setLayoutManager() {
+        LinearLayoutManager trailerLayoutManager = new LinearLayoutManager(this);
+        trailerLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        rv_trailer.setLayoutManager(trailerLayoutManager);
+        rv_trailer.setHasFixedSize(false);
+
+        LinearLayoutManager reviewLayoutManager = new LinearLayoutManager(this);
+        reviewLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        rv_reviews.setLayoutManager(reviewLayoutManager);
+        rv_reviews.setHasFixedSize(false);
+    }
+
 
     @Override
     protected void onResume() {
@@ -143,13 +158,19 @@ public class DetailMovieActivity extends Activity implements DetailMovieView {
 
     @Override
     public void setTrailerItem(List<Video> videos) {
-        rv_trailer.setAdapter(new TrailerAdapter(videos));
+        rv_trailer.setAdapter(new TrailerAdapter(videos, new TrailerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Video video) {
+                navigateToYoutubeTrailer(video);
+            }
+        }));
         Log.d(TAG, "setTrailerItem: " + videos.toString());
     }
 
     @Override
     public void setReviewItem(List<Review> reviews) {
-
+        rv_reviews.setAdapter(new ReviewAdapter(reviews));
+        Log.d(TAG, "setReviewItem: " + reviews.toString());
     }
 
     @Override
@@ -157,8 +178,8 @@ public class DetailMovieActivity extends Activity implements DetailMovieView {
         return movie;
     }
 
-    @Override
-    public void navigateToYoutubeTrailer(Video video) {
 
+    public void navigateToYoutubeTrailer(Video video) {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Config.YOUTUBE_PLAY_URL + video.getKey())));
     }
 }

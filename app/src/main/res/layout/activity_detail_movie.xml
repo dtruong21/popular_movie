@@ -87,20 +87,36 @@
             android:layout_height="wrap_content"
             android:padding="4dp" />
 
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_trailer"
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </android.support.v7.widget.RecyclerView>
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="@string/review"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_reviews"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical" />
 
-        </android.support.v7.widget.RecyclerView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="@string/Video"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_trailer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false" />
+
+
     </LinearLayout>
 </ScrollView>
 

@@ -6,6 +6,9 @@
     <string name="vote_average">Vote average</string>
     <string name="vote_count">Vote count</string>
     <string name="overview">Overview</string>
+    <string name="trailer">Trailer</string>
+    <string name="review">Review</string>
+    <string name="Video">Trailer Youtube</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -28,5 +31,4 @@
 
     <string name="add2Fav">Add to favorite</string>
 
-    <string name="trailer">Trailer</string>
 </resources>

@@ -12,6 +12,8 @@ import com.cmtruong.udacity.BuildConfig;
 public class Config {
 
     public static final String API_URL = "https://api.themoviedb.org/3/movie/";
+    public static final String YOUTUBE_URL = "http://img.youtube.com/vi/";
+    public static final String YOUTUBE_PLAY_URL = "http://www.youtube.com/watch?v=";
     public static final String POPULAR = "popular";
     public static final String TOP_RATED = "top_rated";
 
@@ -22,4 +24,9 @@ public class Config {
 
     // Movie's intent key to transfer
     public static final String MOVIE_INTENT_KEY = "movie";
+
+    // Database
+    public static final String DATABASE_MOVIE = "movie.db";
+    public static final int DATABASE_VERSION = 1;
+
 }

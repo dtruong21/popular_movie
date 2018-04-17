@@ -19,5 +19,4 @@ public interface DetailMovieView {
 
     Movie setMovieItem();
 
-    void navigateToYoutubeTrailer(Video video);
 }
