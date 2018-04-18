@@ -1,6 +1,7 @@
 package com.cmtruong.udacity.adapters;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,6 +38,10 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
         Log.i(TAG, "MovieAdapter: begin ...");
     }
 
+    public MovieAdapter(@NonNull Context context) {
+        super(context, 0);
+    }
+
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -65,6 +70,7 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
         Log.i(TAG, "getView: checked");
         return convertView;
     }
+
 
     class ViewHolder {
         @BindView(R.id.iv_grid_item)

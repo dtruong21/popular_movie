@@ -182,7 +182,10 @@ public class DetailMovieActivity extends Activity implements DetailMovieView {
     }
 
     @Override
-    public void addedToFav() {
+    public void addedToFav(ContentValues values) {
+        Uri uri = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, values);
+        if (uri != null)
+            Log.d(TAG, "addedToFav: " + uri.toString());
         bt_fav.setBackgroundColor(Color.BLUE);
     }
 
@@ -197,29 +200,7 @@ public class DetailMovieActivity extends Activity implements DetailMovieView {
     }
 
     public void addFavorite(View view) {
-
         mPresenter.insertToFavoriteList(movie);
-        insertMovieTable(movie);
     }
 
-    public void insertMovieTable(Movie movie) {
-
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(MovieContract.MovieEntry.COL_ID, movie.getId());
-        contentValues.put(MovieContract.MovieEntry.COL_TITLE, movie.getTitle());
-        contentValues.put(MovieContract.MovieEntry.COL_BACKDROP, movie.getBackdrop_path());
-        contentValues.put(MovieContract.MovieEntry.COL_DATE, movie.getRelease_date());
-        contentValues.put(MovieContract.MovieEntry.COL_LANGUAGE, movie.getOriginal_language());
-        contentValues.put(MovieContract.MovieEntry.COL_ORI_TITLE, movie.getOriginal_title());
-        contentValues.put(MovieContract.MovieEntry.COL_OVERVIEW, movie.getOverview());
-        contentValues.put(MovieContract.MovieEntry.COL_POSTER, movie.getPoster_path());
-        contentValues.put(MovieContract.MovieEntry.COL_VOTE, movie.getVote_average());
-
-        Uri uri = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);
-
-        if (uri != null) {
-            Log.d(TAG, "insertMovieTable: " + uri.toString());
-        }
-        finish();
-    }
 }

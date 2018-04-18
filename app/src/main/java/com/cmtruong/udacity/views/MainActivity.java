@@ -1,9 +1,14 @@
 package com.cmtruong.udacity.views;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.LoaderManager;
+import android.content.AsyncTaskLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -20,10 +25,12 @@ import com.cmtruong.udacity.R;
 import com.cmtruong.udacity.adapters.FetchItemInteractorImpl;
 import com.cmtruong.udacity.adapters.MovieAdapter;
 import com.cmtruong.udacity.configs.Config;
+import com.cmtruong.udacity.data.MovieContract;
 import com.cmtruong.udacity.models.Movie;
 import com.cmtruong.udacity.presenter.MainPresenter;
 import com.cmtruong.udacity.presenter.MainPresenterImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -48,11 +55,11 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
     @BindView(R.id.gv_movie)
     GridView gridView;
 
-    List<Movie> moviesList;
+    private List<Movie> moviesList;
 
     SharedPreferences sharedPreferences;
 
-    String sortType;
+    private String sortType;
 
 
     @Override
@@ -66,7 +73,6 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
         sortType = sharedPreferences.getString(getResources().getString(R.string.pref_sort_key), Config.POPULAR);
         PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(this);
-
     }
 
     @Override
@@ -98,8 +104,8 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
 
     @Override
     public void setItems(List<Movie> movies) {
-        gridView.setAdapter(new MovieAdapter(this, movies));
         moviesList = movies;
+        gridView.setAdapter(new MovieAdapter(this, movies));
         Log.i(TAG, "setItems: checked");
     }
 
@@ -155,6 +161,10 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
             return true;
         }
 
+        if (id == R.id.action_favorite) {
+            setItems(getAll());
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -163,6 +173,64 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         if (s.equals(getString(R.string.pref_sort_key))) {
             sortType = sharedPreferences.getString(getResources().getString(R.string.pref_sort_key), Config.POPULAR);
+        }
+    }
+
+    public List<Movie> getAll() {
+        List<Movie> movieDataList = new ArrayList<>();
+        try {
+            Cursor mCursor = getApplicationContext().getContentResolver().query
+                    (MovieContract.MovieEntry.CONTENT_URI,
+                            null,
+                            null,
+                            null,
+                            null);
+            // Check that the cursor isn't null and contains an item.
+            if (mCursor != null && mCursor.moveToFirst()) {
+                do {
+                    movieDataList.add(getMovieData(mCursor));
+                } while (mCursor.moveToNext());
+
+            } else
+                // Query was empty or returned null.
+                movieDataList = null;
+
+            if (mCursor != null && !mCursor.isClosed())
+                mCursor.close();
+
+        } catch (Exception ex) {
+            return null;
+        }
+
+        return movieDataList;
+    }
+
+    private Movie getMovieData(Cursor data) {
+        if (data == null)
+            return null;
+        else {
+            int id = data.getInt(data.getColumnIndex(MovieContract.MovieEntry.COL_ID));
+            String title = data.getString(data.getColumnIndex(MovieContract.MovieEntry.COL_TITLE));
+            String overview = data.getString(data.getColumnIndex(MovieContract.MovieEntry.COL_OVERVIEW));
+            String posterPath = data.getString(data.getColumnIndex(MovieContract.MovieEntry.COL_POSTER));
+            String releaseDate = data.getString(data.getColumnIndex(MovieContract.MovieEntry.COL_DATE));
+            String originalTitle = data.getString(data.getColumnIndex(MovieContract.MovieEntry.COL_ORI_TITLE));
+            String orignalLanguage = data.getString(data.getColumnIndex(MovieContract.MovieEntry.COL_LANGUAGE));
+            String backdropPath = data.getString(data.getColumnIndex(MovieContract.MovieEntry.COL_BACKDROP));
+            Double vote = data.getDouble(data.getColumnIndex(MovieContract.MovieEntry.COL_VOTE));
+
+            // Return a movie object.
+            Movie movie = new Movie();
+            movie.setId(id);
+            movie.setBackdrop_path(backdropPath);
+            movie.setOriginal_language(orignalLanguage);
+            movie.setOriginal_title(originalTitle);
+            movie.setOverview(overview);
+            movie.setPoster_path(posterPath);
+            movie.setTitle(title);
+            movie.setRelease_date(releaseDate);
+            movie.setVote_average(vote);
+            return movie;
         }
     }
 

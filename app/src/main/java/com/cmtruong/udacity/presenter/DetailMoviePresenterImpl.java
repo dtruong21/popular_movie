@@ -1,8 +1,10 @@
 package com.cmtruong.udacity.presenter;
 
 import android.app.LoaderManager;
+import android.content.ContentValues;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -48,8 +50,7 @@ public class DetailMoviePresenterImpl implements DetailMoviePresenter, FetchDeta
 
     @Override
     public void insertToFavoriteList(Movie movie) {
-        if (mView != null)
-            mInteractor.addFavorite(movie, this);
+        mInteractor.addFavorite(movie, this);
     }
 
     @Override
@@ -91,9 +92,9 @@ public class DetailMoviePresenterImpl implements DetailMoviePresenter, FetchDeta
     }
 
     @Override
-    public void onInsertSuccess() {
-        if (mView != null)
-            mView.addedToFav();
+    public void onInsertSuccess(ContentValues contentValues) {
+        mView.addedToFav(contentValues);
     }
+
 
 }

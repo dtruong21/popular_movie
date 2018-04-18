@@ -1,5 +1,7 @@
 package com.cmtruong.udacity.views;
 
+import android.content.ContentValues;
+
 import com.cmtruong.udacity.models.Movie;
 import com.cmtruong.udacity.models.Review;
 import com.cmtruong.udacity.models.Video;
@@ -17,7 +19,7 @@ public interface DetailMovieView {
 
     void setReviewItem(List<Review> reviews);
 
-    void addedToFav();
+    void addedToFav(ContentValues contentValues);
 
     Movie setMovieItem();
 

@@ -1,10 +1,13 @@
 package com.cmtruong.udacity.adapters;
 
+import android.content.ContentValues;
+import android.net.Uri;
 import android.os.Handler;
 import android.util.Log;
 
 import com.cmtruong.udacity.api.MovieServices;
 import com.cmtruong.udacity.configs.Config;
+import com.cmtruong.udacity.data.MovieContract;
 import com.cmtruong.udacity.models.Movie;
 import com.cmtruong.udacity.models.ResultReview;
 import com.cmtruong.udacity.models.ResultVideo;
@@ -89,7 +92,18 @@ public class FetchDetailInteractorImpl implements FetchDetailInteractor {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                listener.onInsertSuccess();
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(MovieContract.MovieEntry.COL_ID, trailer.getId());
+                contentValues.put(MovieContract.MovieEntry.COL_TITLE, trailer.getTitle());
+                contentValues.put(MovieContract.MovieEntry.COL_BACKDROP, trailer.getBackdrop_path());
+                contentValues.put(MovieContract.MovieEntry.COL_DATE, trailer.getRelease_date());
+                contentValues.put(MovieContract.MovieEntry.COL_LANGUAGE, trailer.getOriginal_language());
+                contentValues.put(MovieContract.MovieEntry.COL_ORI_TITLE, trailer.getOriginal_title());
+                contentValues.put(MovieContract.MovieEntry.COL_OVERVIEW, trailer.getOverview());
+                contentValues.put(MovieContract.MovieEntry.COL_POSTER, trailer.getPoster_path());
+                contentValues.put(MovieContract.MovieEntry.COL_VOTE, trailer.getVote_average());
+                Log.d(TAG, "insertMovieTable: " + contentValues.toString());
+                listener.onInsertSuccess(contentValues);
             }
         }, 500);
     }

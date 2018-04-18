@@ -1,5 +1,7 @@
 package com.cmtruong.udacity.adapters;
 
+import android.content.ContentValues;
+
 import com.cmtruong.udacity.models.Movie;
 import com.cmtruong.udacity.models.Review;
 import com.cmtruong.udacity.models.Video;
@@ -20,7 +22,7 @@ public interface FetchDetailInteractor {
 
         Movie getMovie();
 
-        void onInsertSuccess();
+        void onInsertSuccess(ContentValues contentValues);
     }
 
     void fetchData(OnLoadListener listener);

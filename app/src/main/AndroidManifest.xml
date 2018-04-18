@@ -36,11 +36,20 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.MainActivity" />
         </activity>
+        <activity
+            android:name=".views.FavoriteActivity"
+            android:parentActivityName=".views.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".views.MainActivity" />
+        </activity>
 
         <provider
-            android:name="com.cmtruong.udacity.data.MovieContentProvider"
+            android:name=".data.MovieContentProvider"
             android:authorities="com.cmtruong.udacity"
             android:exported="false" />
+
+
     </application>
 
 </manifest>
