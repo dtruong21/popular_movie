@@ -14,12 +14,15 @@ import com.cmtruong.udacity.configs.Config;
 public class MovieDbHelper extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_MOVIE = "CREATE TABLE " + MovieContract.MovieEntry.TABLE_NAME
-            + " (" + MovieContract.MovieEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + " ("
             + MovieContract.MovieEntry.COL_ID + " INTEGER PRIMARY KEY NOT NULL,"
             + MovieContract.MovieEntry.COL_TITLE + " TEXT NOT NULL,"
             + MovieContract.MovieEntry.COL_OVERVIEW + " TEXT NOT NULL,"
             + MovieContract.MovieEntry.COL_DATE + " TEXT NOT NULL,"
             + MovieContract.MovieEntry.COL_VOTE + " REAL NOT NULL,"
+            + MovieContract.MovieEntry.COL_ORI_TITLE + " TEXT NOT NULL,"
+            + MovieContract.MovieEntry.COL_LANGUAGE + " TEXT NOT NULL,"
+            + MovieContract.MovieEntry.COL_BACKDROP + " TEXT NOT NULL,"
             + MovieContract.MovieEntry.COL_POSTER + " TEXT NOT NULL"
             + ");";
 

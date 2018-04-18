@@ -1,6 +1,8 @@
 package com.cmtruong.udacity.presenter;
 
 
+import com.cmtruong.udacity.models.Movie;
+
 /**
  * @author davidetruong
  * @version 1.0
@@ -14,6 +16,7 @@ public interface DetailMoviePresenter {
 
     void onResume();
 
+    void insertToFavoriteList(Movie movie);
 
     void onDestroy();
 
@@ -21,5 +24,4 @@ public interface DetailMoviePresenter {
 
     void onDestroyReview();
 
-    void onVideoItemClicked();
 }

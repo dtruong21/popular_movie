@@ -1,5 +1,9 @@
 package com.cmtruong.udacity.presenter;
 
+import android.app.LoaderManager;
+import android.content.Loader;
+import android.database.Cursor;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.cmtruong.udacity.adapters.FetchDetailInteractor;
@@ -43,6 +47,12 @@ public class DetailMoviePresenterImpl implements DetailMoviePresenter, FetchDeta
     }
 
     @Override
+    public void insertToFavoriteList(Movie movie) {
+        if (mView != null)
+            mInteractor.addFavorite(movie, this);
+    }
+
+    @Override
     public void onDestroy() {
         mView = null;
     }
@@ -54,11 +64,6 @@ public class DetailMoviePresenterImpl implements DetailMoviePresenter, FetchDeta
 
     @Override
     public void onDestroyReview() {
-
-    }
-
-    @Override
-    public void onVideoItemClicked() {
 
     }
 
@@ -84,4 +89,11 @@ public class DetailMoviePresenterImpl implements DetailMoviePresenter, FetchDeta
     public Movie getMovie() {
         return mView.setMovieItem();
     }
+
+    @Override
+    public void onInsertSuccess() {
+        if (mView != null)
+            mView.addedToFav();
+    }
+
 }

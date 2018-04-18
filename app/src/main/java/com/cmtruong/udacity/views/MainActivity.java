@@ -1,5 +1,6 @@
 package com.cmtruong.udacity.views;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -53,6 +54,7 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
 
     String sortType;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +66,7 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
         sortType = sharedPreferences.getString(getResources().getString(R.string.pref_sort_key), Config.POPULAR);
         PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(this);
+
     }
 
     @Override
@@ -71,7 +74,6 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
         super.onResume();
         Log.i(TAG, "onResume: begin here ...");
         mPresenter.onResume();
-
     }
 
     @Override
@@ -121,6 +123,18 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
     }
 
     @Override
+    public void setItemFavorite(List<Movie> movies) {
+        gridView.setAdapter(new MovieAdapter(this, movies));
+        moviesList = movies;
+        Log.d(TAG, "setItemFavorite: checked");
+    }
+
+    @Override
+    public boolean checkFlagFavorite(Boolean isFav) {
+        return isFav;
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.settings, menu);
@@ -141,6 +155,7 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
             return true;
         }
 
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -150,4 +165,5 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
             sortType = sharedPreferences.getString(getResources().getString(R.string.pref_sort_key), Config.POPULAR);
         }
     }
+
 }

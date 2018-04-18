@@ -21,4 +21,8 @@ public interface MainView {
     void navigateToDetail(Movie movie);
 
     String setSortType();
+
+    void setItemFavorite(List<Movie> movies);
+
+    boolean checkFlagFavorite(Boolean isFav);
 }

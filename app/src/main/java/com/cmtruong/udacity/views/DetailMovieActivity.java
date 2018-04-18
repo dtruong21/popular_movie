@@ -1,22 +1,28 @@
 package com.cmtruong.udacity.views;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cmtruong.udacity.R;
 import com.cmtruong.udacity.adapters.FetchDetailInteractorImpl;
 import com.cmtruong.udacity.adapters.ReviewAdapter;
 import com.cmtruong.udacity.adapters.TrailerAdapter;
 import com.cmtruong.udacity.configs.Config;
+import com.cmtruong.udacity.data.MovieContract;
 import com.cmtruong.udacity.models.Movie;
 import com.cmtruong.udacity.models.Review;
 import com.cmtruong.udacity.models.Video;
@@ -55,6 +61,8 @@ public class DetailMovieActivity extends Activity implements DetailMovieView {
     TextView voteAverage;
     @BindView(R.id.tv_overview)
     TextView overview;
+    @BindView(R.id.bt_add_favorite)
+    Button bt_fav;
 
     @BindView(R.id.rv_reviews)
     RecyclerView rv_reviews;
@@ -174,6 +182,11 @@ public class DetailMovieActivity extends Activity implements DetailMovieView {
     }
 
     @Override
+    public void addedToFav() {
+        bt_fav.setBackgroundColor(Color.BLUE);
+    }
+
+    @Override
     public Movie setMovieItem() {
         return movie;
     }
@@ -181,5 +194,32 @@ public class DetailMovieActivity extends Activity implements DetailMovieView {
 
     public void navigateToYoutubeTrailer(Video video) {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Config.YOUTUBE_PLAY_URL + video.getKey())));
+    }
+
+    public void addFavorite(View view) {
+
+        mPresenter.insertToFavoriteList(movie);
+        insertMovieTable(movie);
+    }
+
+    public void insertMovieTable(Movie movie) {
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MovieContract.MovieEntry.COL_ID, movie.getId());
+        contentValues.put(MovieContract.MovieEntry.COL_TITLE, movie.getTitle());
+        contentValues.put(MovieContract.MovieEntry.COL_BACKDROP, movie.getBackdrop_path());
+        contentValues.put(MovieContract.MovieEntry.COL_DATE, movie.getRelease_date());
+        contentValues.put(MovieContract.MovieEntry.COL_LANGUAGE, movie.getOriginal_language());
+        contentValues.put(MovieContract.MovieEntry.COL_ORI_TITLE, movie.getOriginal_title());
+        contentValues.put(MovieContract.MovieEntry.COL_OVERVIEW, movie.getOverview());
+        contentValues.put(MovieContract.MovieEntry.COL_POSTER, movie.getPoster_path());
+        contentValues.put(MovieContract.MovieEntry.COL_VOTE, movie.getVote_average());
+
+        Uri uri = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);
+
+        if (uri != null) {
+            Log.d(TAG, "insertMovieTable: " + uri.toString());
+        }
+        finish();
     }
 }

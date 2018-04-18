@@ -1,6 +1,7 @@
 package com.cmtruong.udacity.adapters;
 
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -29,6 +30,7 @@ public class FetchItemInteractorImpl implements FetchItemInteractor {
 
     private List<Movie> movies = new ArrayList<>();
 
+    private String sortType;
 
     @Override
     public void fetchItem(final onFinishedListener listener) {
@@ -38,28 +40,32 @@ public class FetchItemInteractorImpl implements FetchItemInteractor {
                 //listener.onFinished(fetchDataPopular());
                 Log.i(TAG, "fetchData: begin ...");
                 Log.i(TAG, "run: " + listener.getSortType());
-                MovieServices movieServices = MovieServices.retrofit.create(MovieServices.class);
-                Call<Page> myPage = movieServices.requestMovies(listener.getSortType(), Config.API_KEY);
-                myPage.enqueue(new Callback<Page>() {
-                    @Override
-                    public void onResponse(Call<Page> call, Response<Page> response) {
-                        int statusCode = response.code();
-                        Log.i(TAG, "onResponse: " + response.code());
-                        if (response.isSuccessful() && statusCode == 200) {
-                            movies = response.body().getMovies();
-                            listener.onFinished(movies);
-                            Log.i(TAG, "onResponse: " + movies.toString());
+                sortType = listener.getSortType();
+                if (sortType.equals("favorite")) {
+                    Log.d(TAG, "run: " + sortType);
+                } else {
+                    MovieServices movieServices = MovieServices.retrofit.create(MovieServices.class);
+                    Call<Page> myPage = movieServices.requestMovies(listener.getSortType(), Config.API_KEY);
+                    myPage.enqueue(new Callback<Page>() {
+                        @Override
+                        public void onResponse(Call<Page> call, Response<Page> response) {
+                            int statusCode = response.code();
+                            Log.i(TAG, "onResponse: " + response.code());
+                            if (response.isSuccessful() && statusCode == 200) {
+                                movies = response.body().getMovies();
+                                listener.onFinished(movies);
+                                Log.i(TAG, "onResponse: " + movies.toString());
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<Page> call, Throwable t) {
-                        Log.e(TAG, "onFailure: ", t);
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<Page> call, Throwable t) {
+                            Log.e(TAG, "onFailure: ", t);
+                        }
+                    });
+                }
+
             }
         }, 1000);
     }
-
-
 }

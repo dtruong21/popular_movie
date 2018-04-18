@@ -15,6 +15,7 @@
 
     <string name="action_refresh">Refresh</string>
     <string name="action_settings">Settings</string>
+    <string name="display_fav">Favorite</string>
 
 
     <!-- Label for the sort preference -->
@@ -30,5 +31,6 @@
     <string name="pref_general_label">General</string>
 
     <string name="add2Fav">Add to favorite</string>
+
 
 </resources>

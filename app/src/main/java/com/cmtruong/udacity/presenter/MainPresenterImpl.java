@@ -34,6 +34,8 @@ public class MainPresenterImpl implements MainPresenter, FetchItemInteractorImpl
         Log.i(TAG, "onResume: " + mainView.setSortType());
     }
 
+
+
     @Override
     public void onItemClicked(int position, Movie movie) {
         if (mainView != null) {

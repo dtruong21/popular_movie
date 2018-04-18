@@ -17,6 +17,8 @@ public interface DetailMovieView {
 
     void setReviewItem(List<Review> reviews);
 
+    void addedToFav();
+
     Movie setMovieItem();
 
 }

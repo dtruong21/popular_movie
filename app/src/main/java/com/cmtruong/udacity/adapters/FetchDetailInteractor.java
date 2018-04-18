@@ -19,7 +19,11 @@ public interface FetchDetailInteractor {
         void onTrailerListener(List<Video> videos);
 
         Movie getMovie();
+
+        void onInsertSuccess();
     }
 
     void fetchData(OnLoadListener listener);
+
+    void addFavorite(Movie trailer, OnLoadListener listener);
 }

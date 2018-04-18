@@ -1,5 +1,7 @@
 package com.cmtruong.udacity.configs;
 
+import android.net.Uri;
+
 import com.cmtruong.udacity.BuildConfig;
 
 /**
@@ -28,5 +30,12 @@ public class Config {
     // Database
     public static final String DATABASE_MOVIE = "movie.db";
     public static final int DATABASE_VERSION = 1;
+
+    // Content Provider
+    public static final String AUTHORITY = "com.cmtruong.udacity";
+    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
+    public static final String PATH_MOVIE = "movies";
+    public static final int MOVIES = 100;
+    public static final int MOVIE_WITH_ID = 101;
 
 }

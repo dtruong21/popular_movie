@@ -20,4 +20,5 @@ public interface FetchItemInteractor {
 
     void fetchItem(onFinishedListener listener);
 
+
 }

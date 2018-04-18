@@ -40,7 +40,10 @@
             android:id="@+id/bt_add_favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/add2Fav" />
+            android:layout_gravity="center"
+            android:onClick="addFavorite"
+            android:text="@string/add2Fav"
+            android:textSize="20sp" />
 
         <TextView
             android:layout_width="match_parent"

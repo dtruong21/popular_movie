@@ -83,4 +83,14 @@ public class FetchDetailInteractorImpl implements FetchDetailInteractor {
             }
         }, 100);
     }
+
+    @Override
+    public void addFavorite(final Movie trailer, final OnLoadListener listener) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                listener.onInsertSuccess();
+            }
+        }, 500);
+    }
 }
