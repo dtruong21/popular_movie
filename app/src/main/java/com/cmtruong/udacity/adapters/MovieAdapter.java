@@ -32,14 +32,20 @@ import butterknife.ButterKnife;
 
 public class MovieAdapter extends ArrayAdapter<Movie> {
     private static final String TAG = MovieAdapter.class.getSimpleName();
+    private List<Movie> movies;
 
     public MovieAdapter(@NonNull Context context, @NonNull List<Movie> objects) {
         super(context, 0, objects);
+        movies = objects;
         Log.i(TAG, "MovieAdapter: begin ...");
     }
 
     public MovieAdapter(@NonNull Context context) {
         super(context, 0);
+    }
+
+    public List<Movie> getItems() {
+        return movies;
     }
 
     @NonNull

@@ -1,5 +1,7 @@
 package com.cmtruong.udacity.views;
 
+import android.os.Bundle;
+
 import com.cmtruong.udacity.models.Movie;
 
 import java.util.List;
@@ -21,6 +23,9 @@ public interface MainView {
     void navigateToDetail(Movie movie);
 
     String setSortType();
+
+    List<Movie> getAll();
+
 
     void setItemFavorite(List<Movie> movies);
 

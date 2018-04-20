@@ -43,6 +43,7 @@ public class FetchItemInteractorImpl implements FetchItemInteractor {
                 sortType = listener.getSortType();
                 if (sortType.equals("favorite")) {
                     Log.d(TAG, "run: " + sortType);
+                    listener.onFinished(movies);
                 } else {
                     MovieServices movieServices = MovieServices.retrofit.create(MovieServices.class);
                     Call<Page> myPage = movieServices.requestMovies(listener.getSortType(), Config.API_KEY);

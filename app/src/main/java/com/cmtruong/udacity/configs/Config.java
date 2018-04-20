@@ -29,7 +29,7 @@ public class Config {
 
     // Database
     public static final String DATABASE_MOVIE = "movie.db";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 3;
 
     // Content Provider
     public static final String AUTHORITY = "com.cmtruong.udacity";

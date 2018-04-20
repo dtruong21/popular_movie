@@ -29,11 +29,12 @@ public class MainPresenterImpl implements MainPresenter, FetchItemInteractorImpl
     @Override
     public void onResume() {
         Log.i(TAG, "onResume: check");
-        if (mainView != null) mainView.showProgress();
+        if (mainView != null) {
+            mainView.showProgress();
+        }
         interactor.fetchItem(this);
         Log.i(TAG, "onResume: " + mainView.setSortType());
     }
-
 
 
     @Override
@@ -51,6 +52,9 @@ public class MainPresenterImpl implements MainPresenter, FetchItemInteractorImpl
     @Override
     public void onFinished(List<Movie> movies) {
         if (mainView != null) {
+            if (mainView.setSortType().equals("favorite")) {
+                movies = mainView.getAll();
+            }
             mainView.setItems(movies);
             mainView.hideProgress();
         }

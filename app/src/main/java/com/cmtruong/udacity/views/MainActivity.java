@@ -10,6 +10,7 @@ import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
@@ -46,6 +47,8 @@ import butterknife.ButterKnife;
 public class MainActivity extends Activity implements MainView, AdapterView.OnItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String STATE_KEY = "Main";
+    private static final String ITEM_KEY = "Item";
 
     MainPresenter mPresenter;
 
@@ -61,6 +64,7 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
 
     private String sortType;
 
+    MovieAdapter movieAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,19 +72,30 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         gridView.setOnItemClickListener(this);
+
         mPresenter = new MainPresenterImpl(this, new FetchItemInteractorImpl());
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sortType = sharedPreferences.getString(getResources().getString(R.string.pref_sort_key), Config.POPULAR);
         PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(this);
+
+        movieAdapter = new MovieAdapter(this, new ArrayList<Movie>());
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i(TAG, "onResume: begin here ...");
+
         mPresenter.onResume();
+
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
 
     @Override
     protected void onDestroy() {
@@ -176,6 +191,7 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
         }
     }
 
+    @Override
     public List<Movie> getAll() {
         List<Movie> movieDataList = new ArrayList<>();
         try {
@@ -205,6 +221,7 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
         return movieDataList;
     }
 
+
     private Movie getMovieData(Cursor data) {
         if (data == null)
             return null;
@@ -233,5 +250,6 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
             return movie;
         }
     }
+
 
 }

@@ -23,7 +23,8 @@ public class MovieDbHelper extends SQLiteOpenHelper {
             + MovieContract.MovieEntry.COL_ORI_TITLE + " TEXT NOT NULL,"
             + MovieContract.MovieEntry.COL_LANGUAGE + " TEXT NOT NULL,"
             + MovieContract.MovieEntry.COL_BACKDROP + " TEXT NOT NULL,"
-            + MovieContract.MovieEntry.COL_POSTER + " TEXT NOT NULL"
+            + MovieContract.MovieEntry.COL_POSTER + " TEXT NOT NULL,"
+            + "UNIQUE(" + MovieContract.MovieEntry.COL_ID + ") ON CONFLICT REPLACE"
             + ");";
 
     private static final String SQL_DROP_MOVIE = "DROP TABLE IF EXISTS " + MovieContract.MovieEntry.TABLE_NAME;

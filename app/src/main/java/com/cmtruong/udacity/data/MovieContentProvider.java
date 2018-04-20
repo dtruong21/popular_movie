@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -85,19 +86,18 @@ public class MovieContentProvider extends ContentProvider {
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
         final SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
         int match = sUriMatcher.match(uri);
-        Uri returnUri;
+        Uri returnUri = null;
 
         switch (match) {
             case MOVIES:
                 // Insert new value into the database
-                long id = db.insert(MovieContract.MovieEntry.TABLE_NAME, null, values);
-                Log.d(TAG, "insert: " + id);
+                long id = insertOrUpdateById(db, uri, MovieContract.MovieEntry.TABLE_NAME, values, MovieContract.MovieEntry.COL_ID);
+
+                //long id = db.insertOrThrow(MovieContract.MovieEntry.TABLE_NAME, null, values);
+                //Log.d(TAG, "insert: " + id);
                 if (id > 0)
                     returnUri = ContentUris.withAppendedId(MovieContract.MovieEntry.CONTENT_URI, id);
-                else
-                    throw new SQLException("Failed to insert row into " + uri);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -111,11 +111,10 @@ public class MovieContentProvider extends ContentProvider {
         final SQLiteDatabase db = mDbHelper.getWritableDatabase();
         int match = sUriMatcher.match(uri);
         int moviesDeleted;
-
         switch (match) {
             case MOVIE_WITH_ID:
                 String id = uri.getPathSegments().get(1);
-                moviesDeleted = db.delete(MovieContract.MovieEntry.TABLE_NAME, "_id=?", new String[]{id});
+                moviesDeleted = db.delete(MovieContract.MovieEntry.TABLE_NAME, "movie_id=?", new String[]{id});
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -128,6 +127,30 @@ public class MovieContentProvider extends ContentProvider {
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        final SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        int count = 0;// Count to tell number of rows updated
+        switch (sUriMatcher.match(uri)) {
+            case MOVIES:
+                Log.d(TAG, "update: checked");
+                count = db.update(MovieContract.MovieEntry.TABLE_NAME, values, selection, selectionArgs);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown URI " + uri);
+        }
+        getContext().getContentResolver().notifyChange(uri, null);
+        return count;
+    }
+
+    private long insertOrUpdateById(SQLiteDatabase db, Uri uri, String table, ContentValues values, String column) throws SQLException {
+        long id = 0;
+        try {
+            id = db.insertOrThrow(table, null, values);
+        } catch (SQLiteConstraintException e) {
+            int nrRows = update(uri, values, column + "=?",
+                    new String[]{values.getAsString(column)});
+            if (nrRows == 0)
+                throw e;
+        }
+        return id;
     }
 }
