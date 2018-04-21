@@ -64,7 +64,9 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
 
     private String sortType;
 
-    MovieAdapter movieAdapter;
+    Parcelable state;
+
+    int index;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,27 +74,31 @@ public class MainActivity extends Activity implements MainView, AdapterView.OnIt
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         gridView.setOnItemClickListener(this);
-
+        state = gridView.onSaveInstanceState();
         mPresenter = new MainPresenterImpl(this, new FetchItemInteractorImpl());
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sortType = sharedPreferences.getString(getResources().getString(R.string.pref_sort_key), Config.POPULAR);
         PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(this);
-
-        movieAdapter = new MovieAdapter(this, new ArrayList<Movie>());
+        if (savedInstanceState != null && savedInstanceState.containsKey(ITEM_KEY)) {
+            Log.d(TAG, "onCreate: - Restore data: " + savedInstanceState.getParcelableArrayList(ITEM_KEY));
+            hideProgress();
+            setItems(savedInstanceState.<Movie>getParcelableArrayList(ITEM_KEY));
+        } else {
+            mPresenter.onResume();
+        }
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        mPresenter.onResume();
-
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(STATE_KEY, state);
+        outState.putParcelableArrayList(ITEM_KEY, (ArrayList<Movie>) moviesList);
         super.onSaveInstanceState(outState);
     }
 
