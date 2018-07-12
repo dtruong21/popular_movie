@@ -12,6 +12,7 @@ This is my version of Udacity's Popular Movie project. I build this as part of [
 
 ## What I've used
 
+- MVP Pattern
 - Android RecyclerView
 - Android Constraint layout
 - Android Preferences
