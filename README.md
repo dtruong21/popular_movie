@@ -1,5 +1,7 @@
 # Movie now!
 
+[![Crates.io](https://img.shields.io/crates/l/rustc-serialize.svg?maxAge=2592000)]()
+
 ## Required
 
 Add your API_KEY into gradle.properties file before testing my application.
