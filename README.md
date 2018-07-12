@@ -4,7 +4,7 @@
 
 Add your API_KEY into gradle.properties file before testing my application.
 
-If you don't have an API_KEY, let's create one in https://www.themoviedb.org
+If you don't have one, let's create yours in https://www.themoviedb.org
 
 ## Udacity Popular Movie
 
